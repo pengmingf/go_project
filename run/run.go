@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	"github.com/PuerkitoBio/goquery"
+	"github.com/flytam/filenamify"
 	"io/ioutil"
 	"net/http"
 	"strings"
@@ -104,8 +105,11 @@ func secondRead() {
 		alt,_ := selection.Attr("alt")
 		src,_ := selection.Attr("src")
 		fmt.Printf("start %s--->%s---->%s\n",message.name,alt,src)
+		alt,err = filenamify.Filenamify(alt,filenamify.Options{
+			Replacement: "-",
+		})
 		path := savePath+"\\"+message.name+"\\"+alt+".jpg"
-		err := DownloadPic(src,path)
+		err = DownloadPic(src,path)
 		if err != nil {
 			MyLog(err.Error(),"secondRead.txt")
 		}

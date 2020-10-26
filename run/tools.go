@@ -36,6 +36,7 @@ func DownloadPic(url string,path string) error {
 	if err != nil {
 		return err
 	}
+	defer resp.Body.Close()
 	body,err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return err
@@ -44,6 +45,7 @@ func DownloadPic(url string,path string) error {
 	if err != nil {
 		return err
 	}
-	io.Copy(out,bytes.NewReader(body))
-	return nil
+	defer out.Close()
+	_,err = io.Copy(out,bytes.NewReader(body))
+	return err
 }
